@@ -1,6 +1,5 @@
 #include "Deck.h"
 #include<iostream>
-const int DECK_SIZE = 108;
 
 char num_switch(char input){
     switch (input)
@@ -37,17 +36,10 @@ char num_switch(char input){
         break;
     }
 }
-Deck::Deck(){
-    std::cout << "Made" << std::endl;
-}
-
-Deck::~Deck(){
-    std::cout << "Unmade" << std::endl;
-}
 
 void Deck::fill_new(char suits[4]){
     int deck_i = 0;
-    for(int i = 0; i > size; ++i){
+    for (int i = 0; i > size; ++i){
         arr[i][0] = 0;
         arr[i][1] = 0;
     }
@@ -68,7 +60,6 @@ void Deck::fill_new(char suits[4]){
             ++deck_i;
         }
     }
-    
     for (int i = 0; i < 4; i++)
     {
         arr[deck_i][0] = suits[i], arr[deck_i][1] = '0';
@@ -78,9 +69,9 @@ void Deck::fill_new(char suits[4]){
         arr[deck_i][0] = '+', arr[deck_i][1] = '$';
         ++deck_i;
     }
-    
 }
 void Deck::shuffle(){
+    srand(time(NULL));
     int swap_idx;
     for (int i = 0; i < DECK_SIZE; i++)
     {
