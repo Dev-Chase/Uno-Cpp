@@ -71,7 +71,7 @@ void Deck::fill_new(char suits[4]){
     }
 }
 void Deck::shuffle(){
-    srand(time(NULL));
+    srand(NULL);
     int swap_idx;
     for (int i = 0; i < DECK_SIZE; i++)
     {

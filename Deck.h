@@ -2,7 +2,7 @@
 #include<iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <ctime>
 const int DECK_SIZE = 108;
 
 class Deck {

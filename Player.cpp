@@ -20,6 +20,16 @@ char colour_switcher(int input) {
     }
 }
 
+bool does_player_have_card(Player player, char value) {
+    for (int i = 0; i < player.size_of_hand; i++)
+    {
+        if (i + 1 != player.size_of_hand && player.cards[i][1] == value) {
+            return true;
+        };
+    }
+    return false;
+};
+
 Player::Player() {
     std::cout << "Made new Player" << "\n";
 }
@@ -126,12 +136,58 @@ char Player::pick_ideal_colour() {
     }
 }
 
-void Player::play_card(char card[2], int cardind, Player other_player, bool is_wild, char colour, char pile[2], bool& is_player_turn, Deck deck) {
+bool Player::play_card(char card[2], int cardind, Player other_player, bool is_wild, char colour, char pile[2], bool& is_player_turn, Deck deck) 
+{
     if (pile[0] == card[0] || pile[1] == card[1] && is_wild != true)
     {
         if (card[1] == '@')
         {
+            if (does_player_have_card(other_player, '@')) {
+                is_player_turn = !is_player_turn;
+            }
+            other_player.debt += debt + 2;
+            debt = 0;
+        }
+        else if (card[1] != 'S' and card[1] != 'r') {
+            is_player_turn = !is_player_turn;
+        }
+        for (int i = cardind; i < size_of_hand; i++)
+        {
+            cards[cardind][0] = cards[cardind+1][0], cards[cardind][1] = cards[cardind+1][1];
+        }
+        --size_of_hand;
+        pile[0] = card[0];
+        pile[1] = card[1];
+    }
+    else if (is_wild) {
+        if (card[1] == '$') {
+            if(does_player_have_card(other_player, '$')) {
+                is_player_turn = !is_player_turn;
+            }
+            other_player.debt += debt + 4;
+            debt = 0;
+        }
+        else {
+            is_player_turn = !is_player_turn;
+        }
+        for (int i = cardind; i < size_of_hand; i++)
+        {
+            cards[cardind][0] = cards[cardind + 1][0], cards[cardind][1] = cards[cardind + 1][1];
+        }
+        --size_of_hand;
+        pile[0] = colour;
+        pile[1] = card[1];
+    }
+    else {
+        std::cout << "You can't play that card" << "\n";
+    }
 
+    if (other_player.debt) {
+        if (does_player_have_card(other_player, '@') != true && pile[1] == '@' || does_player_have_card(other_player, '$') != true && pile[1] == '$') {
+            for (int i = 0; i < other_player.debt; ++i) {
+                other_player.add_card(other_player.cards, other_player.size_of_hand, deck);
+            other_player.debt = 0;
+            return is_player_turn;
         }
     }
 }

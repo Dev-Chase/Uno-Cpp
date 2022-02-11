@@ -4,7 +4,7 @@
 #include<iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <ctime>
 #include "Deck.h"
 #include "Player.h"
 
@@ -12,18 +12,95 @@ char suits[4] = { 'R', 'G', 'B', 'Y' };
 char pile[2] = { 'R', '0' };
 bool is_player_turn = true;
 
-bool does_player_have_card(Player player, char value) {
-    for (int i = 0; i < player.size_of_hand; i++)
+std::string name_switcher(char value){
+    switch (value)
     {
-        if (i + 1 != player.size_of_hand && player.cards[i][1] == value) {
-            return true;
-        };
+        case 'R':
+            return "Red";
+            break;
+        case 'G':
+            return "Green";
+            break;
+        case 'B':
+            return "Blue";
+            break;
+        case 'Y':
+            return "Yellow";
+            break;
+        case '+':
+            return "";
+            break;
+        case 'W':
+            return "";
+            break;
+        case '0':
+            return " 0";
+            break;
+        case '1':
+            return "1";
+            break;
+        case '2':
+            return "2";
+            break;
+        case '3':
+            return "3";
+            break;
+        case '4':
+            return "4";
+            break;
+        case '5':
+            return "5";
+            break;
+        case '6':
+            return "6";
+            break;
+        case '7':
+            return "7";
+            break;
+        case '8':
+            return "8";
+            break;
+        case '9':
+            return "9";
+            break;
+        case '@':
+            return "+2";
+            break;
+        case 'r':
+            return "Reverse";
+            break;
+        case 'S':
+            return "Skip";
+            break;
+        case '$':
+            return "+4";
+            break;
+        case 'C':
+            return "Wildcard";
+            break;
+        default:
+            return "Error";
+            break;
     }
-    return false;
-};
+}
+
+bool is_wild_switcher(char value){
+    switch (value)
+    {
+    case '$':
+        return true;
+        break;
+    case 'C':
+        return true;
+        break;
+    default:
+        return false;
+        break;
+    }
+}
 
 int main() {
-    srand(time(NULL));
+    srand(NULL);
     Deck deck;
     deck.fill_new(suits);
     deck.shuffle();
@@ -43,6 +120,12 @@ int main() {
         std::cout << Chase.cards[i][0] << Chase.cards[i][1] << "\n";
     }
     std::cout << "--------------------------" << "\n";
+    std::cout << "Current card is a: " << pile[0] << pile[1] << "\n";
+    std::cout << "You are attempting to play a " << name_switcher(Chase.cards[4][0]) << name_switcher(Chase.cards[4][1]) << "\n";
+    char card[2] = {Chase.cards[4][0], Chase.cards[4][1]};
+    bool is_wild = is_wild_switcher(Chase.cards[4][1]);
+    is_player_turn = Chase.play_card(card, 4, Computer, is_wild, 'B', pile, is_player_turn, deck);
+    std::cout << "Current card is a " << name_switcher(pile[0]) << name_switcher(pile[1]) << "\n";
 
     return 0;
 }

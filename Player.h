@@ -2,7 +2,7 @@
 #include "Deck.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <ctime>
 #include<iostream>
 
 class Player
@@ -23,7 +23,7 @@ public:
     void gen_colours();
     void gen_catagories();
     char pick_ideal_colour();
-    void play_card(char[2], int, Player, bool, char, char[2], bool&, Deck);
+    bool play_card(char[2], int, Player, bool, char, char[2], bool&, Deck);
 
 };
 
