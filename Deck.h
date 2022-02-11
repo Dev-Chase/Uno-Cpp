@@ -2,14 +2,13 @@
 #include<iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctime>
+#include <time.h>
 const int DECK_SIZE = 108;
 
 class Deck {
     public:
         char arr[108][2];
         int size = 108;
-        Deck();
         void fill_new(char[4]);
         void shuffle();
         char* get_next_card();
