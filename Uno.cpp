@@ -130,9 +130,9 @@ int main() {
     get_user_input(pile, Human, Computer, is_player_turn, deck);
     show_situation(Human, Computer, pile, is_player_turn);
     Computer.gen_colours();
-    Computer.gen_catagories();
     int* available_cards_ind = get_available_cards(Computer, pile);
     int size_of_available_cards = get_length_of_available_cards(Computer, pile);
+    Computer.gen_catagories(available_cards_ind, size_of_available_cards);
     int highest_val_card_ind = get_card_vals(Computer, pile, available_cards_ind, size_of_available_cards);
     char card[2] = {Computer.cards[highest_val_card_ind][0], Computer.cards[highest_val_card_ind][1]};
     std::cout << card[0] << card[1] << "\n";
@@ -269,7 +269,7 @@ int get_card_vals(Player player, char pile[2], int avail_cards[], int size_of_av
     {
         for (int i = 0; i < size_of_avail_cards; i++)
         {
-            if (player.cards[avail_cards[i]][1])
+            if (player.cards[avail_cards[i]][1] == 'C')
             {
                 card_vals[i] = 4;
             }

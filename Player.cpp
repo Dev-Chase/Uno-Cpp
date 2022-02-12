@@ -74,10 +74,10 @@ void Player::gen_colours() {
     }
 }
 
-void Player::gen_catagories() {
-    for (int i = 0; i < size_of_hand; i++)
+void Player::gen_catagories(int arr[108], int size_of_arr) {
+    for (int i = 0; i < size_of_arr; i++)
     {
-        switch (cards[i][1])
+        switch (cards[arr[i]][1])
         {
         case '@':
             ++a_cards;

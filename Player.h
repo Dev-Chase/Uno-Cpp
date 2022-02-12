@@ -21,7 +21,7 @@ public:
     Player();
     void add_card(char[][2], int& size, Deck deck);
     void gen_colours();
-    void gen_catagories();
+    void gen_catagories(int[108], int);
     char pick_ideal_colour();
     bool play_card(char[2], int, Player&, bool, char, char[2], bool&, Deck);
     bool can_player_play(char[2]);
