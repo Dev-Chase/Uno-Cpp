@@ -130,7 +130,7 @@ void new_game() {
         deck.shuffle();
     }
     deck.add_card_to_pile(pile);
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 7; i++)
     {
         Human.add_card(deck.arr, deck.size, deck);
         Computer.add_card(deck.arr, deck.size, deck);
@@ -142,14 +142,15 @@ void new_game() {
         if (is_player_turn)
         {
             get_user_input(pile, is_player_turn);
-            if (Human.size_of_hand == 0)
-            {
-                is_game_over = true;
-                is_player_winner = true;
-                break;
-            }
+            
         }
-        else
+        if (Human.size_of_hand == 0)
+        {
+            is_game_over = true;
+            is_player_winner = true;
+            break;
+        }
+        if(!is_player_turn)
         {
             if (Computer.can_player_play(pile))
             {
@@ -172,6 +173,10 @@ void new_game() {
             {
                 Computer.add_card(deck.arr, deck.size, deck);
                 std::cout << "The computer is drawing." << "\n";
+                if (!Computer.can_player_play(pile))
+                {
+                    is_player_turn = !is_player_turn;
+                }
             }
         }
 
@@ -183,13 +188,13 @@ void new_game() {
         }
     }
 
-    if (is_player_turn)
+    if (is_game_over && is_player_winner)
     {
         std::cout << "-------------------------------" << "\n";
         std::cout << "-------Congrats! You won!------" << "\n";
         std::cout << "-------------------------------" << "\n";
     }
-    else
+    else if(is_game_over && !is_player_winner)
     {
         std::cout << "-------------------------------" << "\n";
         std::cout << "--------Sorry. You lost.-------" << "\n";
@@ -259,7 +264,7 @@ void get_user_input(char pile[2], bool &is_player_turn) {
         }
         is_player_turn = Human.play_card(card, user_in-1, Computer, is_wild, colour_choice, pile, is_player_turn, deck);
     }
-    else if (user_in && user_in == 110 && !std::cin.fail()) {
+    else if (!user_in && user_in == 0 && !std::cin.fail()) {
         std::cout << "You are drawing." << "\n";
         Human.add_card(deck.arr, deck.size, deck);
         if (!Human.can_player_play(pile))
@@ -308,7 +313,7 @@ int get_card_vals(Player player, char pile[2], int avail_cards[], int size_of_av
     {
         for (int i = 0; i < size_of_avail_cards; i++)
         {
-            if (player.cards[avail_cards[i]][0] == pile[0] || player.cards[avail_cards[i]][1] == pile[1])
+            if (player.cards[avail_cards[i]][0] == pile[0] || player.cards[avail_cards[i]][1] == pile[1] && player.cards[avail_cards[i]][1] != '$' && player.cards[avail_cards[i]][1] != 'C')
             {
                 if (player.cards[avail_cards[i]][1] == 'r' || player.cards[avail_cards[i]][1] == 'S')
                 {

@@ -192,7 +192,7 @@ bool Player::play_card(char card[2], int cardind, Player &other_player, bool is_
 bool Player::can_player_play(char pile[2]) {
     for (int i = 0; i < size_of_hand; i++)
     {
-        if (pile[0] == cards[i][0] || pile[1] == cards[i][1] || pile[0] == '+' || pile[0] == 'W')
+        if (pile[0] == cards[i][0] || pile[1] == cards[i][1] || cards[i][0] == '+' || cards[i][0] == 'W')
         {
             return true;
         }
