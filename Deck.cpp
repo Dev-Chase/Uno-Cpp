@@ -71,7 +71,7 @@ void Deck::fill_new(char suits[4]){
     }
 }
 void Deck::shuffle(){
-    srand(NULL);
+    srand(time(0));
     int swap_idx;
     for (int i = 0; i < DECK_SIZE; i++)
     {
@@ -94,4 +94,14 @@ char* Deck::get_next_card(){
         fill_new(suits);
     }
     return card_to_return;
+}
+
+void Deck::add_card_to_pile(char pile[2]) {
+    pile[0] = arr[size - 1][0], pile[1] = arr[size - 1][1];
+    arr[size - 1][0] = 0, arr[size - 1][1] = 0;
+    --size;
+    if (size == 0) {
+        char suits[4] = { 'R', 'G', 'B', 'Y' };
+        fill_new(suits);
+    }
 }

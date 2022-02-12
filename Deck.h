@@ -12,4 +12,5 @@ class Deck {
         void fill_new(char[4]);
         void shuffle();
         char* get_next_card();
+        void add_card_to_pile(char[2]);
 };

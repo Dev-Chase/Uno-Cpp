@@ -23,7 +23,8 @@ public:
     void gen_colours();
     void gen_catagories();
     char pick_ideal_colour();
-    bool play_card(char[2], int, Player, bool, char, char[2], bool&, Deck);
+    bool play_card(char[2], int, Player&, bool, char, char[2], bool&, Deck);
+    bool can_player_play(char[2]);
 
 };
 

@@ -99,36 +99,100 @@ bool is_wild_switcher(char value){
     }
 }
 
+void show_situation(Player, Player, char[2], bool);
+void get_user_input(char[2], Player&, Player&, bool&, Deck);
+
 int main() {
-    srand(NULL);
+    srand(time(0));
     Deck deck;
     deck.fill_new(suits);
     deck.shuffle();
-    Player Chase;
+    Player Human;
     Player Computer;
+    while (deck.arr[DECK_SIZE-1][0] == '+' || deck.arr[DECK_SIZE-1][0] == 'W' || deck.arr[DECK_SIZE - 1][1] == '@' || deck.arr[DECK_SIZE - 1][1] == 'r' || deck.arr[DECK_SIZE - 1][1] == 'S')
+    {
+        deck.shuffle();
+    }
+    deck.add_card_to_pile(pile);
     /*for (int i = 0; i < 108; i++)
     {
         std::cout << deck.arr[i][0] << deck.arr[i][1] << "\n";
     }*/
     for (int i = 0; i < 7; i++)
     {
-        Chase.add_card(deck.arr, deck.size, deck);
+        Human.add_card(deck.arr, deck.size, deck);
         Computer.add_card(deck.arr, deck.size, deck);
     }
-    for (int i = 0; i < Chase.size_of_hand; i++)
-    {
-        std::cout << Chase.cards[i][0] << Chase.cards[i][1] << "\n";
-    }
-    std::cout << "--------------------------" << "\n";
-    std::cout << "Current card is a: " << pile[0] << pile[1] << "\n";
-    std::cout << "You are attempting to play a " << name_switcher(Chase.cards[4][0]) << name_switcher(Chase.cards[4][1]) << "\n";
-    char card[2] = {Chase.cards[4][0], Chase.cards[4][1]};
-    bool is_wild = is_wild_switcher(Chase.cards[4][1]);
-    is_player_turn = Chase.play_card(card, 4, Computer, is_wild, 'B', pile, is_player_turn, deck);
-    std::cout << "Current card is a " << name_switcher(pile[0]) << name_switcher(pile[1]) << "\n";
+    show_situation(Human, Computer, pile, is_player_turn);
+    get_user_input(pile, Human, Computer, is_player_turn, deck);
+    show_situation(Human, Computer, pile, is_player_turn);
 
     return 0;
 }
+
+void show_situation(Player player, Player computer, char pile[2], bool is_player_turn) {
+    std::cout << "--------------------------" << "\n";
+    std::cout << "The Computer has " << computer.size_of_hand << " cards: ";
+    for (int i = 0; i < computer.size_of_hand; i++)
+    {
+        std::cout << name_switcher(computer.cards[i][0]) << " " << name_switcher(computer.cards[i][1]) << "   ";
+    }
+    std::cout << "\n" << "Current card is a: " << name_switcher(pile[0]) << " " << name_switcher(pile[1]) << "\n";
+    std::cout << "You have " << player.size_of_hand << " cards: ";
+    for (int i = 0; i < player.size_of_hand; i++)
+    {
+        std::cout << name_switcher(player.cards[i][0]) << " " << name_switcher(player.cards[i][1]) << "   ";
+    }
+    if (is_player_turn)
+    {
+        std::cout << "\n" << "It's your turn." << "\n";
+    }
+    else {
+        std::cout << "\n" << "It's the computer's turn." << "\n";
+    }
+    std::cout << "--------------------------" << "\n";
+
+}
+
+void get_user_input(char pile[2], Player &player, Player &computer, bool &is_player_turn, Deck deck) {
+    int user_in;
+    std::cout << "What card would you like to play?(Number of Card from left to right, 110=draw): ";
+    std::cin >> user_in;
+    if (user_in && user_in <= player.size_of_hand && !std::cin.fail())
+    {
+        char card[2] = {player.cards[user_in-1][0], player.cards[user_in-1][1]};
+        char colour_choice = 'B';
+        bool is_wild = is_wild_switcher(card[1]);
+        if (is_wild)
+        {
+            bool valid = false;
+            while (!valid)
+            {
+                valid = true;
+                std::cout << "What colour would you like to play?(R,G,B,Y): ";
+                std::cin >> colour_choice;
+                if (std::cin.fail() || colour_choice != 'R' && colour_choice != 'G' && colour_choice != 'B' && colour_choice != 'Y')
+                {
+                    std::cin.clear(); //This corrects the stream.
+                    std::cin.ignore(); //This skips the left over stream data.
+                    std::cout << "\n" << "Sorry that isn't an option. Try again" << "\n";
+                    valid = false;
+                }
+            }
+        }
+        is_player_turn = player.play_card(card, user_in-1, computer, is_wild, colour_choice, pile, is_player_turn, deck);
+    }
+    else if (!user_in && user_in == 0 && !std::cin.fail()) {
+        std::cout << "You are drawing." << "\n";
+        player.add_card(deck.arr, deck.size, deck);
+    }
+    else if(std::cin.fail()) {
+        std::cout << "Sorry that wasn't an integer and didn't work. Try again." << "\n";
+        std::cin.clear();
+        std::cin.ignore();
+        is_player_turn = true;
+    }
+};
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
