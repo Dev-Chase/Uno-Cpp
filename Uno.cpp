@@ -129,15 +129,23 @@ int main() {
     show_situation(Human, Computer, pile, is_player_turn);
     get_user_input(pile, Human, Computer, is_player_turn, deck);
     show_situation(Human, Computer, pile, is_player_turn);
-    Computer.gen_colours();
-    int* available_cards_ind = get_available_cards(Computer, pile);
-    int size_of_available_cards = get_length_of_available_cards(Computer, pile);
-    Computer.gen_catagories(available_cards_ind, size_of_available_cards);
-    int highest_val_card_ind = get_card_vals(Computer, pile, available_cards_ind, size_of_available_cards);
-    char card[2] = {Computer.cards[highest_val_card_ind][0], Computer.cards[highest_val_card_ind][1]};
-    std::cout << card[0] << card[1] << "\n";
-    bool is_wild = is_wild_switcher(card[1]);
-    is_player_turn = Computer.play_card(card, highest_val_card_ind, Human, is_wild, Computer.pick_ideal_colour(), pile, is_player_turn, deck);
+    if (Computer.can_player_play(pile))
+    {
+        Computer.gen_colours();
+        int* available_cards_ind = get_available_cards(Computer, pile);
+        int size_of_available_cards = get_length_of_available_cards(Computer, pile);
+        Computer.gen_catagories(available_cards_ind, size_of_available_cards);
+        int highest_val_card_ind = get_card_vals(Computer, pile, available_cards_ind, size_of_available_cards);
+        char card[2] = { Computer.cards[highest_val_card_ind][0], Computer.cards[highest_val_card_ind][1] };
+        std::cout << card[0] << card[1] << "\n";
+        bool is_wild = is_wild_switcher(card[1]);
+        is_player_turn = Computer.play_card(card, highest_val_card_ind, Human, is_wild, Computer.pick_ideal_colour(), pile, is_player_turn, deck);
+    }
+    else
+    {
+        Computer.add_card(deck.arr, deck.size, deck);
+    }
+    
     show_situation(Human, Computer, pile, is_player_turn);
 
     return 0;
