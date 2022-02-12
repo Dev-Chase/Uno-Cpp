@@ -11,6 +11,6 @@ class Deck {
         int size = 108;
         void fill_new(char[4]);
         void shuffle();
-        char* get_next_card();
+        void get_next_card(char&, char&);
         void add_card_to_pile(char[2]);
 };

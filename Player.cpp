@@ -38,7 +38,7 @@ void Player::add_card(char arr[][2], int& size, Deck deck) {
     char new_card[2] = { arr[size - 1][0], arr[size - 1][1] };
     arr[size - 1][0] = 0, arr[size - 1][1] = 0;
     --size;
-    if (size == 0) {
+    if (size == 1) {
         char suits[4] = { 'R', 'G', 'B', 'Y' };
         deck.fill_new(suits);
         deck.shuffle();
@@ -147,7 +147,7 @@ bool Player::play_card(char card[2], int cardind, Player &other_player, bool is_
         else if (card[1] != 'S' and card[1] != 'r') {
             is_player_turn = !is_player_turn;
         }
-        for (int i = 0; i < size_of_hand; i++)
+        for (int i = cardind; i < size_of_hand; i++)
         {
             cards[i][0] = cards[i + 1][0], cards[i][1] = cards[i + 1][1];
         }

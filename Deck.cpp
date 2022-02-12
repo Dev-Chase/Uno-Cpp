@@ -85,22 +85,12 @@ void Deck::shuffle(){
     }
     
 }
-char* Deck::get_next_card(){
-    static char card_to_return[2] = {arr[size-1][0], arr[size-1][1]};
-    arr[size-1][0] = 0, arr[size-1][1] = 0;
-    --size;
-    if(size == 0){
-        char suits[4] = {'R', 'G', 'B', 'Y'};
-        fill_new(suits);
-    }
-    return card_to_return;
-}
 
 void Deck::add_card_to_pile(char pile[2]) {
     pile[0] = arr[size - 1][0], pile[1] = arr[size - 1][1];
     arr[size - 1][0] = 0, arr[size - 1][1] = 0;
     --size;
-    if (size == 0) {
+    if (size == 1) {
         char suits[4] = { 'R', 'G', 'B', 'Y' };
         fill_new(suits);
     }
