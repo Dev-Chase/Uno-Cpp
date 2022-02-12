@@ -49,10 +49,6 @@ void Player::add_card(char arr[][2], int& size, Deck deck) {
 void Player::gen_colours() {
     for (int i = 0; i < size_of_hand; i++)
     {
-        std::cout << cards[i][0] << cards[i][1] << "\n";
-    }
-    for (int i = 0; i < size_of_hand; i++)
-    {
         switch (cards[i][0])
         {
         case 'R':

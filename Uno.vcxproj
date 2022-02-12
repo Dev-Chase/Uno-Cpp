@@ -139,7 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AI.cpp" />
     <ClCompile Include="Deck.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Uno.cpp" />

@@ -101,6 +101,9 @@ bool is_wild_switcher(char value){
 
 void show_situation(Player, Player, char[2], bool);
 void get_user_input(char[2], Player&, Player&, bool&, Deck);
+int* get_available_cards(Player, char[2]);
+int get_length_of_available_cards(Player, char[2]);
+int get_card_vals(Player, char[2], int[], int);
 
 int main() {
     srand(time(0));
@@ -125,6 +128,16 @@ int main() {
     }
     show_situation(Human, Computer, pile, is_player_turn);
     get_user_input(pile, Human, Computer, is_player_turn, deck);
+    show_situation(Human, Computer, pile, is_player_turn);
+    Computer.gen_colours();
+    Computer.gen_catagories();
+    int* available_cards_ind = get_available_cards(Computer, pile);
+    int size_of_available_cards = get_length_of_available_cards(Computer, pile);
+    int highest_val_card_ind = get_card_vals(Computer, pile, available_cards_ind, size_of_available_cards);
+    char card[2] = {Computer.cards[highest_val_card_ind][0], Computer.cards[highest_val_card_ind][1]};
+    std::cout << card[0] << card[1] << "\n";
+    bool is_wild = is_wild_switcher(card[1]);
+    is_player_turn = Computer.play_card(card, highest_val_card_ind, Human, is_wild, Computer.pick_ideal_colour(), pile, is_player_turn, deck);
     show_situation(Human, Computer, pile, is_player_turn);
 
     return 0;
@@ -156,7 +169,7 @@ void show_situation(Player player, Player computer, char pile[2], bool is_player
 
 void get_user_input(char pile[2], Player &player, Player &computer, bool &is_player_turn, Deck deck) {
     int user_in;
-    std::cout << "What card would you like to play?(Number of Card from left to right, 110=draw): ";
+    std::cout << "What card would you like to play?(Number of Card from left to right, 0=draw): ";
     std::cin >> user_in;
     if (user_in && user_in <= player.size_of_hand && !std::cin.fail())
     {
@@ -192,6 +205,109 @@ void get_user_input(char pile[2], Player &player, Player &computer, bool &is_pla
         std::cin.ignore();
         is_player_turn = true;
     }
+};
+
+int* get_available_cards(Player player, char pile[2]) {
+    static int list_of_card_ind[108];
+    int size_of_list = 0;
+    for (int i = 0; i < player.size_of_hand; i++)
+    {
+        if (player.cards[i][0] == pile[0] || player.cards[i][0] == '+' || player.cards[i][0] == 'W' || player.cards[i][1] == pile[1])
+        {
+            list_of_card_ind[size_of_list] = i;
+            ++size_of_list;
+        }
+    }
+    return list_of_card_ind;
+}
+
+int get_length_of_available_cards(Player player, char pile[2]) {
+    int size_of_list = 0;
+    for (int i = 0; i < player.size_of_hand; i++)
+    {
+        if (player.cards[i][0] == pile[0] || player.cards[i][0] == '+' || player.cards[i][0] == 'W' || player.cards[i][1] == pile[1])
+        {
+            ++size_of_list;
+        }
+    }
+    return size_of_list;
+}
+
+int get_card_vals(Player player, char pile[2], int avail_cards[], int size_of_avail_cards) {
+    int highest_val_card = 0;
+    int card_vals[108];
+    if (player.r_cards+player.a_cards != 0)
+    {
+        for (int i = 0; i < size_of_avail_cards; i++)
+        {
+            if (player.cards[avail_cards[i]][0] == pile[0] || player.cards[avail_cards[i]][1] == pile[1])
+            {
+                if (player.cards[avail_cards[i]][1] == 'r' || player.cards[avail_cards[i]][1] == 'S')
+                {
+                    card_vals[i] = 6;
+                }
+                else if (player.cards[avail_cards[i]][1] == '@')
+                {
+                    if (pile[1] == '@')
+                    {
+                        card_vals[i] = 8;
+                    }
+                    else {
+                        card_vals[i] = 4;
+                    }
+                }
+                else {
+                    card_vals[i] = 2;
+                }
+            }
+            else {
+                card_vals[i] = 1;
+            }
+        }
+    }
+    else if (player.r_cards + player.a_cards == 0 && player.w_cards > 0)
+    {
+        for (int i = 0; i < size_of_avail_cards; i++)
+        {
+            if (player.cards[avail_cards[i]][1])
+            {
+                card_vals[i] = 4;
+            }
+            else if (player.cards[avail_cards[i]][1] == '$' && pile[1] != '$')
+            {
+                card_vals[i] = 6;
+            }
+            else if (player.cards[avail_cards[i]][1] == '$' && pile[1] == '$')
+            {
+                card_vals[i] = 8;
+            }
+            else
+            {
+                card_vals[i] = 2;
+            }
+        }
+    }
+
+    if (size_of_avail_cards != 1)
+    {
+        for (int i = 0; i < size_of_avail_cards; i++)
+        {
+            if (i != size_of_avail_cards-1) {
+                if (card_vals[i] > card_vals[i+1])
+                {
+                    highest_val_card = avail_cards[i];
+                }
+                else {
+                    highest_val_card = avail_cards[i+1];
+                }
+            }
+        }
+    }
+    else {
+        highest_val_card = avail_cards[0];
+    }
+
+    return highest_val_card;
 };
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
