@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctime>
+#include <chrono>
+#include <thread>
 #include "Deck.h"
 #include "Player.h"
 
@@ -139,10 +141,14 @@ void new_game() {
     while (!is_game_over)
     {
         show_situation(Human, Computer, pile, is_player_turn);
+        std::this_thread::sleep_for(std::chrono::nanoseconds(10));
+        std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::seconds(1));
         if (is_player_turn)
         {
             get_user_input(pile, is_player_turn);
             show_situation(Human, Computer, pile, is_player_turn);
+            std::this_thread::sleep_for(std::chrono::nanoseconds(10));
+            std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::seconds(1));
         }
         if (Human.size_of_hand == 0)
         {
