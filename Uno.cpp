@@ -127,7 +127,7 @@ void new_game() {
         Human.cards[i][0] = 0, Human.cards[i][1] = 0;
         Computer.cards[i][0] = 0, Computer.cards[i][1] = 0;
     }
-    while (deck.arr[DECK_SIZE - 1][0] == '+' || deck.arr[DECK_SIZE - 1][0] == 'W' || deck.arr[DECK_SIZE - 1][1] == '@' || deck.arr[DECK_SIZE - 1][1] == 'r' || deck.arr[DECK_SIZE - 1][1] == 'S')
+    while (deck.arr[deck.size - 1][0] == '+' || deck.arr[deck.size - 1][0] == 'W' || deck.arr[deck.size - 1][1] == '@' || deck.arr[deck.size - 1][1] == 'r' || deck.arr[deck.size - 1][1] == 'S')
     {
         deck.shuffle();
     }
@@ -223,7 +223,7 @@ int main() {
 }
 
 void show_situation(Player player, Player computer, char pile[2], bool is_player_turn) {
-    std::cout << "--------------------------" << "\n";
+    std::cout << "  --------------------------" << "\n";
     std::cout << "The Computer has " << computer.size_of_hand << " cards: ";
     for (int i = 0; i < computer.size_of_hand; i++)
     {
@@ -242,7 +242,7 @@ void show_situation(Player player, Player computer, char pile[2], bool is_player
     else {
         std::cout << "\n" << "It's the computer's turn." << "\n";
     }
-    std::cout << "--------------------------" << "\n";
+    std::cout << "  --------------------------" << "\n";
 
 }
 

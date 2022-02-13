@@ -93,5 +93,6 @@ void Deck::add_card_to_pile(char pile[2]) {
     if (size == 1) {
         char suits[4] = { 'R', 'G', 'B', 'Y' };
         fill_new(suits);
+        shuffle();
     }
 }

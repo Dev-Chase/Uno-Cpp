@@ -23,7 +23,7 @@ char colour_switcher(int input) {
 bool does_player_have_card(Player player, char value) {
     for (int i = 0; i < player.size_of_hand; i++)
     {
-        if (i + 1 != player.size_of_hand && player.cards[i][1] == value) {
+        if (player.size_of_hand && player.cards[i][1] == value) {
             return true;
         };
     }
@@ -38,7 +38,7 @@ void Player::add_card(char arr[][2], int& size, Deck deck) {
     char new_card[2] = { arr[size - 1][0], arr[size - 1][1] };
     arr[size - 1][0] = 0, arr[size - 1][1] = 0;
     --size;
-    if (size == 1) {
+    if (deck.size == 1) {
         char suits[4] = { 'R', 'G', 'B', 'Y' };
         deck.fill_new(suits);
         deck.shuffle();
@@ -146,7 +146,7 @@ bool Player::play_card(char card[2], int cardind, Player &other_player, bool is_
             other_player.debt += debt + 2;
             debt = 0;
         }
-        else if (card[1] != 'S' and card[1] != 'r') {
+        else if (card[1] != 'S' && card[1] != 'r') {
             is_player_turn = !is_player_turn;
         }
         for (int i = cardind; i < size_of_hand; i++)
@@ -180,13 +180,18 @@ bool Player::play_card(char card[2], int cardind, Player &other_player, bool is_
         std::cout << "You can't play that card" << "\n";
     }
 
-    if (other_player.debt != 0) {
-        if (!does_player_have_card(other_player, '@') && pile[1] == '@' || !does_player_have_card(other_player, '$') && pile[1] == '$') {
-            for (int i = 0; i < other_player.debt; ++i) {
+    if (other_player.debt && !does_player_have_card(other_player, '@') && pile[1] == '@') {
+        for (int i = 0; i < other_player.debt; ++i) {
+            other_player.add_card(deck.arr, deck.size, deck);
+        }
+        other_player.debt = 0;
+    }
+    else if (other_player.debt && !does_player_have_card(other_player, '$') && pile[1] == '$')
+    {
+        for (int i = 0; i < other_player.debt; ++i) {
                 other_player.add_card(deck.arr, deck.size, deck);
             }
             other_player.debt = 0;
-        }
     }
     return is_player_turn;
 }
