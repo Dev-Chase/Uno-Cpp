@@ -142,7 +142,7 @@ void new_game() {
         if (is_player_turn)
         {
             get_user_input(pile, is_player_turn);
-            
+            show_situation(Human, Computer, pile, is_player_turn);
         }
         if (Human.size_of_hand == 0)
         {
@@ -240,7 +240,7 @@ void get_user_input(char pile[2], bool &is_player_turn) {
     int user_in;
     std::cout << "What card would you like to play?(Number of Card from left to right, 0=draw): ";
     std::cin >> user_in;
-    if (user_in && user_in <= Human.size_of_hand && !std::cin.fail() && user_in != 110)
+    if (user_in && user_in <= Human.size_of_hand && !std::cin.fail() && user_in != 0)
     {
         char card[2] = {Human.cards[user_in-1][0], Human.cards[user_in-1][1]};
         char colour_choice = 'B';

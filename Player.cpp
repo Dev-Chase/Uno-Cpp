@@ -47,6 +47,7 @@ void Player::add_card(char arr[][2], int& size, Deck deck) {
     ++size_of_hand;
 }
 void Player::gen_colours() {
+    reds = 0, greens = 0, blues = 0, yellows = 0;
     for (int i = 0; i < size_of_hand; i++)
     {
         switch (cards[i][0])
@@ -75,6 +76,7 @@ void Player::gen_colours() {
 }
 
 void Player::gen_catagories(int arr[108], int size_of_arr) {
+    a_cards = 0, r_cards = 0, w_cards = 0;
     for (int i = 0; i < size_of_arr; i++)
     {
         switch (cards[arr[i]][1])
