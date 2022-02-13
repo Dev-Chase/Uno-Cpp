@@ -110,7 +110,7 @@ void show_situation(Player, Player, char[2], bool);
 void get_user_input(char[2], bool&);
 int* get_available_cards(Player, char[2]);
 int get_length_of_available_cards(Player, char[2]);
-int get_card_vals(Player, char[2], int[], int);
+int get_card_vals(Player, char[2], int[], int, Player);
 
 void new_game() {
     is_player_turn = true;
@@ -169,7 +169,7 @@ void new_game() {
                 }
                 std::cout << size_of_available_cards << "\n";
                 Computer.gen_catagories(available_cards_ind, size_of_available_cards);
-                int highest_val_card_ind = get_card_vals(Computer, pile, available_cards_ind, size_of_available_cards);
+                int highest_val_card_ind = get_card_vals(Computer, pile, available_cards_ind, size_of_available_cards, Human);
                 char card[2] = { Computer.cards[highest_val_card_ind][0], Computer.cards[highest_val_card_ind][1] };
                 std::cout << card[0] << card[1] << "\n";
                 bool is_wild = is_wild_switcher(card[1]);
@@ -316,7 +316,7 @@ int get_length_of_available_cards(Player player, char pile[2]) {
     return size_of_list;
 }
 
-int get_card_vals(Player player, char pile[2], int avail_cards[], int size_of_avail_cards) {
+int get_card_vals(Player player, char pile[2], int avail_cards[], int size_of_avail_cards, Player other_player) {
     int highest_val_card = 0;
     int card_vals[108];
     if (player.r_cards+player.a_cards != 0)
@@ -336,7 +336,13 @@ int get_card_vals(Player player, char pile[2], int avail_cards[], int size_of_av
                         card_vals[i] = 8;
                     }
                     else {
+                        if (other_player.size_of_hand < 3)
+                        {
+                            card_vals[i] = 8;
+                        }
+                        else{
                         card_vals[i] = 4;
+                        }
                     }
                 }
                 else {
@@ -344,7 +350,13 @@ int get_card_vals(Player player, char pile[2], int avail_cards[], int size_of_av
                 }
             }
             else {
-                card_vals[i] = 1;
+                if (player.cards[avail_cards[i]][1] == '$' && other_player.size_of_hand < 3)
+                {
+                    card_vals[i] = 10;
+                }
+                else{
+                    card_vals[i] = 1;
+                }
             }
         }
     }
