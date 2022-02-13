@@ -201,3 +201,11 @@ bool Player::can_player_play(char pile[2]) {
     }
     return false;
 }
+
+bool Player::can_player_play_card(char pile[2], int ind) {
+    if (pile[0] == cards[ind][0] || pile[1] == cards[ind][1] || cards[ind][0] == 'W' || cards[ind][0] == '$')
+    {
+        return true;
+    }
+    return false;
+};

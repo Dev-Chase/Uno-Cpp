@@ -277,7 +277,7 @@ void get_user_input(char pile[2], bool &is_player_turn) {
     else if (!user_in && user_in == 0 && !std::cin.fail()) {
         std::cout << "You are drawing." << "\n";
         Human.add_card(deck.arr, deck.size, deck);
-        if (!Human.can_player_play(pile))
+        if (!Human.can_player_play_card(pile, Human.size_of_hand-1))
         {
             is_player_turn = !is_player_turn;
         }
